@@ -1,7 +1,7 @@
 {
-  "name": "blssec",
+  "name": "manager",
   "version": "1.0.0",
-  "description": "BLS SECURITY",
+  "description": "",
   "main": "bot.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -13,7 +13,10 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git+https://github.com/nedal235/discord-anti-spam.git"
   },
-  "homepage": ""
+  "bugs": {
+    "url": "https://github.com/nedal235/discord-anti-spam/issues"
+  },
+  "homepage": "https://github.com/nedal235/discord-anti-spam#readme"
 }
