@@ -1,171 +1,86 @@
-const botconfig = require("./botconfig.json");
 const Discord = require("discord.js");
+const prefix = ("!");
+const client = new Discord.Client();
 
-const bot = new Discord.Client({disableEveryone: true});
+client.on('message', function(message) {
+    if(message.content.startsWith(prefix + "report")) {
+        let messageArgs = message.content.split(" ").slice(1).join(" ");
+        let messageReason = message.content.split(" ").slice(2).join(" ");
+        if(!messageReason) return message.reply("**# Specify a reason!**");
+    let mUser = message.mentions.users.first();
+    if(!mUser) return message.channel.send("Couldn't find user.");
+    let Rembed = new Discord.RichEmbed()
+    .setTitle("`New Report!`")
+    .setThumbnail(message.author.avatarURL)
+    .addField("**# - Reported User:**",mUser,true)
+    .addField("**# - Reported User ID:**",mUser.id,true)
+    .addField("**# - Reason:**",messageReason,true)
+    .addField("**# - Channel:**",message.channel,true)
+    .addField("**# - Time:**",message.createdAt,true)
+    .setFooter("لو ان الابلاغ فيه مزح راح يتعرض صاحب الابلاغ لعقوبات")
+message.channel.send(Rembed)
+message.channel.send("__Are you sure you want to send this to the Server owner??__").then(msg => {
+    msg.react("✅")
+    msg.react("❌")
+.then(() => msg.react('❌'))
+.then(() =>msg.react('✅'))
+let reaction1Filter = (reaction, user) => reaction.emoji.name === '✅' && user.id === message.author.id;
+let reaction2Filter = (reaction, user) => reaction.emoji.name === '❌' && user.id === message.author.id;
 
-bot.on("ready", async () => {
-  console.log(`${bot.user.username} is online!`);
-;
-
+let reaction1 = msg.createReactionCollector(reaction1Filter, { time: 12000 });
+let reaction2 = msg.createReactionCollector(reaction2Filter, { time: 12000 });
+reaction1.on("collect", r => {
+    message.guild.owner.send(Rembed)
+    message.reply("**# - Done! 🎇**");
+})
+reaction2.on("collect", r => {
+    message.reply("**# - Canceled!**");
+})
+})
+}
+    if (message.isMentioned(client.user))
+    {
+    message.channel.send(" كيف اقدر اساعدك!!");
+    } 
+	return;
 });
-
-bot.on("message", async message => {
-  if(message.author.bot) return;
-  if(message.channel.type === "dm") return;
-
-  let prefix = botconfig.prefix;
-  let messageArray = message.content.split(" ");
-  let cmd = messageArray[0];
-  let args = messageArray.slice(1);
-var argresult = message.content.split(` `).slice(1).join(' ');
-    if(message.content.includes('discord.gg')){
-        message.delete()
-      message.channel.sendMessage("", {embed: {
-        title: "لا تنشر",
-        color: 0x06DF00,
-        description: "يمنع النشر في هذا السيرفر",
-        footer: {
-          text: "تم مسح الرسالة"
-        }
-      }}).then(msg => {msg.delete(3000)});
-                          }
-
-  if(cmd === `${prefix}kick`){
-
-    //!kick @daeshan askin for it
-
-    let kUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
-    if(!kUser) return message.channel.send("Can't find user!");
-    let kReason = args.join(" ").slice(22);
-    if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send("No can do pal!");
-    if(kUser.hasPermission("MANAGE_MESSAGES")) return message.channel.send("That person can't be kicked!");
-
-    let kickEmbed = new Discord.RichEmbed()
-    .setDescription("~Kick~")
-    .setColor("#e56b00")
-    .addField("Kicked User", `${kUser} with ID ${kUser.id}`)
-    .addField("Kicked By", `<@${message.author.id}> with ID ${message.author.id}`)
-    .addField("Kicked In", message.channel)
-    .addField("Time", message.createdAt)
-    .addField("Reason", kReason);
-
-    let kickChannel = message.guild.channels.find(`name`, "✥⇣❀شــــاتالـــعـــام❀⇣✥");
-    if(!kickChannel) return message.channel.send("Can't find incidents channel.");
-
-    message.guild.member(kUser).kick(kReason);
-    kickChannel.send(kickEmbed);
-
-    return;
-  }
-
-  if(cmd === `${prefix}ban`){
-
-    let bUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
-    if(!bUser) return message.channel.send("Can't find user!");
-    let bReason = args.join(" ").slice(22);
-    if(!message.member.hasPermission("MANAGE_MEMBERS")) return message.channel.send("you cant!");
-    if(bUser.hasPermission("MANAGE_MESSAGES")) return message.channel.send("That person can't be kicked!");
-
-    let banEmbed = new Discord.RichEmbed()
-    .setDescription("~Ban~")
-    .setColor("#bc0000")
-    .addField("Banned User", `${bUser} with ID ${bUser.id}`)
-    .addField("Banned By", `<@${message.author.id}> with ID ${message.author.id}`)
-    .addField("Banned In", message.channel)
-    .addField("Time", message.createdAt)
-    .addField("Reason", bReason);
-
-    let incidentchannel = message.guild.channels.find(`name`, "✥⇣❀شــــاتالـــعـــام❀⇣✥");
-    if(!incidentchannel) return message.channel.send("Can't find incidents channel.");
-
-    message.guild.member(bUser).ban(bReason);
-    incidentchannel.send(banEmbed);
-
-
-    return;
-  }
-
-  if(cmd === `${prefix}serverinfo`){
-
-    let sicon = message.guild.iconURL;
-    let serverembed = new Discord.RichEmbed()
-    .setDescription("Server Information")
-    .setColor("#15f153")
-    .setThumbnail(sicon)
-    .addField("Server Name", message.guild.name)
-    .addField("Created On", message.guild.createdAt)
-    .addField("You Joined", message.member.joinedAt)
-    .addField("Total Members", message.guild.memberCount);
-
-    return message.channel.send(serverembed);
-  }
-
-  if(cmd === `${prefix}botinfo`){
-
-    let bicon = bot.user.displayAvatarURL;
-    let botembed = new Discord.RichEmbed()
-    .setDescription("Bot Information")
-    .setColor("#15f153")
-    .setThumbnail(bicon)
-    .addField("Bot Name", bot.user.username)
-    .addField("Created On", bot.user.createdAt);
-
-    return message.channel.send(botembed);
-  }
-  
-  if(cmd === `${prefix}st`){
-
-    bot.user.setGame(argresult , "https://www.twitch.tv/ninja");
-
-    return message.channel.send("Done");
-  }
- 
-  if(cmd === `${prefix}ls`){
-
-    bot.user.setActivity(argresult , {type:'LISTENING'});
-
-    return message.channel.send("Done");
-  }
+client.on('guildMemberAdd', member => {
+    let channel = member.guild.channels.find('name', '✥⇣❀شــــات̲الـتـرحـيـب❀⇣✥');
+    let memberavatar = member.user.avatarURL
+      if (!channel) return;
+    let embed = new Discord.RichEmbed()
+        .setColor('PURPLE')
+        .setThumbnail(memberavatar)
+        .addField('🎽 | name :  ',`${member}`)
+        .addField('📢 | اطلق من دخل' , `Welcome to the server, ${member}`)
+        .addField('🆔 | user :', "**[" + `${member.id}` + "]**" )
+                .addField('➡| انت العضو رقم',`${member.guild.memberCount}`)
+               
+                  .addField("Name:",`<@` + `${member.id}` + `>`, true)
+                     
+                                     .addField(' الـسيرفر', `${member.guild.name}`,true)
+                                       
+     .setFooter(`${member.guild.name}`)
+        .setTimestamp()
    
-  if(cmd === `${prefix}wt`){
-
-    bot.user.setActivity(argresult , {type:'WATCHING'});
-
-    return message.channel.send("Done");
-  }
+      channel.sendEmbed(embed);
+    });
+   
+client.on('guildMemberRemove', member => {
+        var embed = new Discord.RichEmbed()
+        .setAuthor(member.user.username, member.user.avatarURL)
+        .setThumbnail(member.user.avatarURL)
+        .setTitle(`بس بعرف وين رحت؟؟؟ :raised_hand::skin-tone-1: :pensive:`)
+        .setDescription(`مع السلامه تشرفنا بك :raised_hand::skin-tone-1: :pensive: `)
+        .addField('👤   تبقي',`**[ ${member.guild.memberCount} ]**`,true)
+        .setColor('PURPLE')
+        .setFooter(`====اهلا السيرفر نور بيك و الله====`, 'https://cdn.discordapp.com/attachments/397818254439219217/399292026782351381/shy.png')
+   
+    var channel =member.guild.channels.find('name', '✥⇣❀شــــات̲الـتـرحـيـب❀⇣✥')
+    if (!channel) return;
+    channel.send({embed : embed});
  
-  if(cmd === `${prefix}pl`){
-
-    bot.user.setGame(argresult);
-
-    return message.channel.send("Done");
-  }
-
-  if(cmd === `${prefix}lockchannel`) {
-                        if(!message.channel.guild) return message.reply(' This command only for servers');
- 
-     if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.reply(' ليس لديك صلاحيات');
-           message.channel.overwritePermissions(message.guild.id, {
-         SEND_MESSAGES: false
- 
-           }).then(() => {
-               message.reply("تم تقفيل الشات :white_check_mark: ")
-           });
-             }
- 
-  if(cmd === `${prefix}unlock`) {
-    if(!message.channel.guild) return message.reply(' This command only for servers');
- 
-if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.reply('ليس لديك صلاحيات');
-           message.channel.overwritePermissions(message.guild.id, {
-         SEND_MESSAGES: true
- 
-           }).then(() => {
-               message.reply("تم فتح الشات:white_check_mark:")
-           });
-             }
-
-
-});
-
-bot.login(process.env.BOT_TOKEN);
+    });
+	
+    
+	client.login(process.env.BOT_TOKEN);
