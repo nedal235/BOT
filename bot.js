@@ -49,7 +49,7 @@ var argresult = message.content.split(` `).slice(1).join(' ');
     .addField("Time", message.createdAt)
     .addField("Reason", kReason);
 
-    let kickChannel = message.guild.channels.find(`name`, "cmd-commands");
+    let kickChannel = message.guild.channels.find(`name`, "✥⇣❀شــــاتالـــعـــام❀⇣✥");
     if(!kickChannel) return message.channel.send("Can't find incidents channel.");
 
     message.guild.member(kUser).kick(kReason);
@@ -75,7 +75,7 @@ var argresult = message.content.split(` `).slice(1).join(' ');
     .addField("Time", message.createdAt)
     .addField("Reason", bReason);
 
-    let incidentchannel = message.guild.channels.find(`name`, "cmd-commands");
+    let incidentchannel = message.guild.channels.find(`name`, "✥⇣❀شــــاتالـــعـــام❀⇣✥");
     if(!incidentchannel) return message.channel.send("Can't find incidents channel.");
 
     message.guild.member(bUser).ban(bReason);
