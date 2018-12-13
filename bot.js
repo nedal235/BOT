@@ -65,6 +65,7 @@ const embed = new Discord.RichEmbed()
 		
 		
 	}
+	return
 });
 client.on('guildMemberAdd', member => {
     let channel = member.guild.channels.find('name', '✥⇣❀شــــات̲الـتـرحـيـب❀⇣✥');
