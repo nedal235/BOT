@@ -43,10 +43,8 @@ reaction2.on("collect", r => {
     message.channel.send(" كيف اقدر اساعدك!!");
     } 
 	return;
-	
-		
 
-});
+}  );
 client.on('guildMemberAdd', member => {
     let channel = member.guild.channels.find('name', '✥⇣❀شــــات̲الـتـرحـيـب❀⇣✥');
     let memberavatar = member.user.avatarURL
