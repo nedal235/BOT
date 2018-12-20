@@ -49,7 +49,7 @@ var argresult = message.content.split(` `).slice(1).join(' ');
     .addField("الوقت", message.createdAt)
     .addField("السبب", kReason);
 
-    let kickChannel = message.guild.channels.find(`name`, "✥⇣❀شــــاتالـــعـــام❀⇣✥");
+    let kickChannel = message.guild.channels.find(`name`, "chat-الشات");
     if(!kickChannel) return message.channel.send("Can't find incidents channel.");
 
     message.guild.member(kUser).kick(kReason);
@@ -75,7 +75,7 @@ var argresult = message.content.split(` `).slice(1).join(' ');
     .addField("الوقت", message.createdAt)
     .addField("السبب", bReason);
 
-    let incidentchannel = message.guild.channels.find(`name`, "✥⇣❀شــــاتالـــعـــام❀⇣✥");
+    let incidentchannel = message.guild.channels.find(`name`, "chat-الشات");
     if(!incidentchannel) return message.channel.send("Can't find incidents channel.");
 
     message.guild.member(bUser).ban(bReason);
@@ -89,7 +89,7 @@ var argresult = message.content.split(` `).slice(1).join(' ');
 
     let sicon = message.guild.iconURL;
     let serverembed = new Discord.RichEmbed()
-    .setDescription("معلومات البوت")
+    .setDescription("معلومات السيرفر")
     .setColor("#15f153")
     .setThumbnail(sicon)
     .addField("الاسم", message.guild.name)
@@ -177,9 +177,42 @@ if (message.content === 'مساعدة') {
         .addField('فتح!', 'لفتح الشات')
         .addField('عليك وضع ! قبل الامر', 'ملحوظة')
         .addField('ابلاغ!', 'للابلاغ عن احد لا يطيع القانون')
+		.addField('!play', 'لتشغيل الاغاني')
+		.addField('!skip', 'لتخطي الاغنية')
+		.addField('!stop', ' لتوقيف الاغاني تماما')
+		.addField('!volume', 'لتغير الصوت')
+		.addField('!np', 'لمعرقة ماذا الان')
+		.addField('!queue', 'للضافة اغنية الي القائمة')
+		.addField('!pause', 'لتوقيف الاغنية موقتا')
+		.addField('!resume', 'لأستكمال الاغاني')
+		.addField('Just Wait', 'المزيد قريبا')
         .setFooter("عليك وضع ! قبل الامر: ملحوظة")
       message.channel.send(helpEmbed);
     }  
-});
+    return
+if (message.content === '!id') {
+        let idembed = new Discord.RichEmbed()
+        .setTitle('iD')
+        .setDescription('معرفة الاي دي')
+        .setThumbnail('http://s.ppy.sh/a/${user.id}}')
+        .setColor("#D0436A")
+        .addField('Nickname', user.name, true)
+        .addField('PP', Math.round(user.pp.raw), true)
+        .addField('Rank', user.pp.rank, true)
+        .addField('Level', Math.round(user.level), true)
+        .addField('Country', user.country, true)
+        .addField('Country Rank', user.pp.countryRank, true)
+        .addField('Playcount', user.counts.plays, true)
+        .addField('Accuracy', `${user.accuracyFormatted}`, true)
+        .setFooter('Requested By ' + message.author.tag, message.author.avatarURL)
+      message.channel.send(idembed);
+		
+		
+		
+	}
+	return
 
-bot.login(process.env.BOT_TOKEN);
+	
+	});
+
+bot.login("NTIxNzEyOTk0NDIyNjIwMTYw.DvQ0Jg.NiG8ICNTZwZnjCOrocZReQzBHd0");
